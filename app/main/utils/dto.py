@@ -12,7 +12,7 @@ class GameDto:
             'league': fields.String(description='League of the game'),
             'away_team': fields.String(description='Away team of the game'),
             'home_team': fields.String(description='Home team of the game'),
-            'starting_time': fields.DateTime(description='Starting time of the game')
+            'starting_time': fields.String(description='Starting time of the game')
         }
     )
 

@@ -1,60 +1,95 @@
 import json
-from datetime import datetime
 
 import requests
 
-from app.main import db
-from app.main.model.game import Game
-
-
-def save_game_data():
-    db.drop_all()
-    db.create_all()
-    loaded_data = load_data('match_details')
-    game_list = []
-    for data in loaded_data:
-        game_id = data['game_id']
-        country = data['country']
-        sport = data['sport_name']
-        league = data['league_name']
-        away_team = data['away_team']
-        home_team = data['home_team']
-        starting_time = extract_time(data['starting_time'])
-        odds_url = data['odds_url']
-        game = Game(
-            game_id=game_id,
-            country=country,
-            sport=sport,
-            league=league,
-            away_team=away_team,
-            home_team=home_team,
-            starting_time=starting_time,
-            odds_url=odds_url)
-        game_list.append(game)
-
-    db.session.add_all(game_list)
-    db.session.commit()
-    db.session.close()
-
 
 def get_all_games():
-    return Game.query.all()
+    loaded_data = load_data('match_details')
+    games = []
+    for data in loaded_data:
+        game = {
+            'game_id': data['game_id'],
+            'country': data['country'],
+            'sport': data['sport_name'],
+            'league': data['league_name'],
+            'away_team': data['away_team'],
+            'home_team': data['home_team'],
+            'starting_time': data['starting_time']
+        }
+        games.append(game)
+    return games
 
 
 def get_a_game(game_id):
-    return Game.query.filter_by(game_id=game_id).first()
+    loaded_data = load_data('match_details')
+    for data in loaded_data:
+        if data['game_id'] == game_id:
+            game = {
+                'game_id': data['game_id'],
+                'country': data['country'],
+                'sport': data['sport_name'],
+                'league': data['league_name'],
+                'away_team': data['away_team'],
+                'home_team': data['home_team'],
+                'starting_time': data['starting_time'],
+                'odds_url': data['odds_url']
+            }
+            return game
+    return None
 
 
 def get_games_by_country(country):
-    return Game.query.filter_by(country=country).all()
+    loaded_data = load_data('match_details')
+    games = []
+    for data in loaded_data:
+        if data['country'] == country:
+            game = {
+                'game_id': data['game_id'],
+                'country': data['country'],
+                'sport': data['sport_name'],
+                'league': data['league_name'],
+                'away_team': data['away_team'],
+                'home_team': data['home_team'],
+                'starting_time': data['starting_time']
+            }
+            games.append(game)
+    return games
 
 
 def get_games_by_sport(sport):
-    return Game.query.filter_by(sport=sport).all()
+    loaded_data = load_data('match_details')
+    games = []
+    for data in loaded_data:
+        if data['sport_name'] == sport:
+            game = {
+                'game_id': data['game_id'],
+                'country': data['country'],
+                'sport': data['sport_name'],
+                'league': data['league_name'],
+                'away_team': data['away_team'],
+                'home_team': data['home_team'],
+                'starting_time': data['starting_time']
+            }
+            games.append(game)
+    return games
 
 
 def get_games_by_league(country, league):
-    return Game.query.filter_by(country=country, league=league).all()
+    loaded_data = load_data('match_details')
+    games = []
+    for data in loaded_data:
+        if data['country'] == country and data['league_name'] == league:
+            game = {
+                'game_id': data['game_id'],
+                'country': data['country'],
+                'sport': data['sport_name'],
+                'league': data['league_name'],
+                'away_team': data['away_team'],
+                'home_team': data['home_team'],
+                'starting_time': data['starting_time']
+            }
+            games.append(game)
+    return games
 
 
 def load_data(file_name):

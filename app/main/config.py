@@ -7,7 +7,7 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL_DEV']
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///games.db'
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
